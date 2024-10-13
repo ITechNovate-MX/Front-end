@@ -1,0 +1,15 @@
+/* Puedes agregar tus propios estilos personalizados aquí si lo necesitas */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Estilos personalizados opcionales */
+.custom-error {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.custom-focus-input {
+  outline-color: #007bff;
+}

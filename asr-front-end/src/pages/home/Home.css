@@ -1,0 +1,9 @@
+/* Estilos personalizados adicionales si los necesitas */
+.home-container {
+    padding: 20px;
+    background-color: #f4f4f4;
+  }
+  
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;

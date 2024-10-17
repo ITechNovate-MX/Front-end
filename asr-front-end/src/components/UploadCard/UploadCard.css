@@ -1,0 +1,44 @@
+.upload-card__container {
+    @apply border-2 border-dashed border-gray-300 p-5 rounded-lg text-center bg-gray-100 transition-shadow duration-300 ease-in-out;
+  }
+  
+  .upload-card__title {
+    @apply text-lg mb-2 text-gray-800;
+  }
+  
+  .upload-card__upload-area {
+    @apply flex flex-col items-center my-4;
+  }
+  
+  .upload-card__icon {
+    @apply mb-2;
+  }
+  
+  .upload-card__drag-text {
+    @apply text-sm mb-2 text-gray-600;
+  }
+  
+  .upload-card__input {
+    @apply hidden;
+  }
+  
+  .upload-card__button {
+    @apply bg-orange-500 text-white px-5 py-2 rounded cursor-pointer transition-colors duration-200;
+  }
+  
+  .upload-card__button:hover {
+    @apply bg-orange-600;
+  }
+  
+  .upload-card__message {
+    @apply mt-3 text-sm;
+  }
+  
+  .upload-card__message--success {
+    @apply text-green-500;
+  }
+  
+  .upload-card__message--error {
+    @apply text-red-500;
+  }
+  

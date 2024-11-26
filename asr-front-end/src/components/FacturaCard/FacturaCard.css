@@ -1,0 +1,17 @@
+.factura-card__container {
+    @apply bg-white border border-gray-300 rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out;
+  }
+  
+  .factura-card__cliente {
+    @apply text-lg font-bold text-gray-800 mb-2;
+  }
+  
+  .factura-card__folio {
+    @apply text-sm text-gray-600 mb-1;
+  }
+  
+  .factura-card__total {
+    @apply text-lg font-semibold text-blue-600;
+   /* @apply text-md font-semibold text-blue-600;*/
+  }
+  

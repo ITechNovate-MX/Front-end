@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import './UploadCard.css';
 import { IUploadCard } from './types';
 
@@ -13,6 +13,7 @@ const UploadCard: React.FC<IUploadCard> = ({
   buttonLabel = 'Buscar archivo',
 }) => {
   const [uploadStatus, setUploadStatus] = useState<'success' | 'error' | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -23,6 +24,12 @@ const UploadCard: React.FC<IUploadCard> = ({
       } catch {
         setUploadStatus('error');
       }
+    }
+  };
+
+  const handleButtonClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click(); // Abre el diálogo para seleccionar el archivo
     }
   };
 
@@ -53,10 +60,12 @@ const UploadCard: React.FC<IUploadCard> = ({
         </span>
         <input
           type="file"
+          ref={fileInputRef}
           className="upload-card__input"
           onChange={handleFileChange}
+          style={{ display: 'none' }} // Ocultamos el input de tipo file
         />
-        <button className="upload-card__button">
+        <button className="upload-card__button" onClick={handleButtonClick}>
           {buttonLabel}
         </button>
       </div>

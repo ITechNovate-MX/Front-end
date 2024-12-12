@@ -1,70 +1,50 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { LoginForm } from '../../components/LoginForm';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAppContext } from '../../app-context/app-context';
+
+import './Login.css';
 
 const Login: React.FC = () => {
-  // Estados para los campos de entrada
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [formStatus, setFormStatus] = useState<'default' | 'error'>('default');
+  const navigate = useNavigate();
+  const { login } = useAppContext();
 
-  // Función para manejar el envío del formulario
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
+  const resetFormStatus = () => {
+    setFormStatus('default');
+  };
 
-    // Validaciones básicas
-    if (email === '' || password === '') {
-      setError('Por favor, llena todos los campos.');
-      return;
+  const handleSignIn = async (email: string, password: string) => {
+    try {
+      console.log('Intentando iniciar sesión con:', { email, password });
+
+      // Autenticar al usuario con Firebase
+      const firebaseCredential = await login(email, password);
+      console.log('Inicio de sesión exitoso con Firebase:', firebaseCredential);
+
+      // Obtener el token de Firebase
+      const token = await firebaseCredential.user.getIdToken();
+      console.log('Token obtenido:', token);
+
+      // Si llega aquí, las credenciales son correctas
+      setFormStatus('default');
+      navigate('/home'); // Redirigir al home
+    } catch (error: any) {
+      console.error('Error durante el inicio de sesión:', error);
+
+      // Mostrar mensaje de error en el formulario
+      setFormStatus('error');
     }
-
-    // Aquí puedes agregar la lógica para enviar los datos al servidor o API
-    console.log('Enviando:', { email, password });
-    setError(''); // Limpia cualquier error previo
-
-    // Resetea los campos tras el envío exitoso
-    setEmail('');
-    setPassword('');
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-950">
-      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Iniciar Sesión</h2>
-        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 font-semibold mb-2">
-              Correo Electrónico
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Ingresa tu correo"
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div className="mb-6">
-            <label htmlFor="password" className="block text-gray-700 font-semibold mb-2">
-              Contraseña
-            </label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Ingresa tu contraseña"
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition duration-300"
-          >
-            Iniciar Sesión
-          </button>
-        </form>
-      </div>
+    <div className="MainLoginComponent">
+      <LoginForm
+        onSubmit={handleSignIn}
+        status={formStatus}
+        onInputChange={resetFormStatus}
+      />
     </div>
   );
 };

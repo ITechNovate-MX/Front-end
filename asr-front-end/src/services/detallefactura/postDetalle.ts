@@ -25,7 +25,7 @@ export const postDetalle = async (
     try {
         // Enviar el POST request
         const response = await httpInstance.post(
-            'http://52.90.133.45:8080/detallefactura/save',
+            '/detallefactura/save',
             payload, // Enviar como JSON
             {
                 headers: {

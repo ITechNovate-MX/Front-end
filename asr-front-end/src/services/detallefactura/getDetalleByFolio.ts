@@ -5,7 +5,7 @@ import { IDetalleFactura } from "./types";
 export const getDetalleByFolio = async (folio: number): Promise<IDetalleFactura[]> => {
     try {
         // Realizar la solicitud GET
-        const response = await httpInstance.get<IDetalleFactura[]>(`http://52.90.133.45:8080/detallefactura/factura/${folio}`);
+        const response = await httpInstance.get<IDetalleFactura[]>(`/detallefactura/factura/${folio}`);
         return response.data; // Retornar los datos de la respuesta
     } catch (error) {
         console.error("Error al obtener los detalles de la factura:", error);

@@ -12,7 +12,7 @@ export const putDetalle = async (
     try {
         // Realizar la solicitud PUT
         const response = await httpInstance.put<IDetalleFactura>(
-            `http://52.90.133.45:8080/detallefactura/${id}`, // URL del endpoint
+            `/detallefactura/${id}`, // URL del endpoint
             detalle, // Objeto con los datos actualizados
             {
                 headers: {

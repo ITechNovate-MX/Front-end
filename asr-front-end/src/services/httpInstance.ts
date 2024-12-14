@@ -1,9 +1,9 @@
+import Config from '../config';
 import axios from 'axios';
 
 const httpInstance = axios.create({
-  baseURL: 'http://localhost:3000',
+    baseURL: Config.FRONT_URL,
 });
-
 
 httpInstance.interceptors.request.use(
     async (config) => {

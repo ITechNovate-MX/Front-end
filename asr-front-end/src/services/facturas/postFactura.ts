@@ -9,7 +9,7 @@ export const postFactura = async (file: File): Promise<any> => {
     formData.append('file', file);
 
     try {
-        const response = await httpInstance.post('52.90.133.45:8080/facturas/upload', formData, {
+        const response = await httpInstance.post('/facturas/upload', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }

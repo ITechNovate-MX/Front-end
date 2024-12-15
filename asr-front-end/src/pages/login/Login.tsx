@@ -19,32 +19,35 @@ const Login: React.FC = () => {
     try {
       console.log('Intentando iniciar sesión con:', { email, password });
 
-      // Autenticar al usuario con Firebase
       const firebaseCredential = await login(email, password);
       console.log('Inicio de sesión exitoso con Firebase:', firebaseCredential);
 
-      // Obtener el token de Firebase
       const token = await firebaseCredential.user.getIdToken();
       console.log('Token obtenido:', token);
 
-      // Si llega aquí, las credenciales son correctas
       setFormStatus('default');
       navigate('/home'); // Redirigir al home
     } catch (error: any) {
       console.error('Error durante el inicio de sesión:', error);
 
-      // Mostrar mensaje de error en el formulario
       setFormStatus('error');
     }
   };
 
   return (
-    <div className="MainLoginComponent">
-      <LoginForm
-        onSubmit={handleSignIn}
-        status={formStatus}
-        onInputChange={resetFormStatus}
-      />
+    <div className="login-bg">
+      <div className="login-overlay"></div>
+      <div className="login-form-container">
+        <h1 className="text-2xl font-bold text-gray-800 mb-4">ASR Industrial</h1>
+        <LoginForm
+          onSubmit={handleSignIn}
+          status={formStatus}
+          onInputChange={resetFormStatus}
+        />
+        {formStatus === 'error' && (
+          <p className="custom-error mt-4">Correo o contraseña incorrectos</p>
+        )}
+      </div>
     </div>
   );
 };

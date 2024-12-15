@@ -32,7 +32,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
 
   return (
     <form className="LoginForm" onSubmit={handleSubmit}>
-      <h2 className="form-title">Sign In</h2>
+      <h2 className="form-title">Iniciar Sesión</h2>
       <div className="form-group">
         <label htmlFor="email">Email</label>
         <input
@@ -60,7 +60,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
           Credenciales inválidas. <br /> Corrobora los datos ingresados.
         </p>
       )}
-      <button type="submit" className="submit-button">Sign In</button>
+      <button type="submit" className="submit-button">Enviar</button>
     </form>
   );
 };

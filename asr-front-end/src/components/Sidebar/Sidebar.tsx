@@ -1,16 +1,23 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useAppContext } from "../../app-context/app-context"; // Importar el contexto
+import React, { useState, useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAppContext } from "../../app-context/app-context";
 import { ROUTES } from "../../routes/constants";
 import { ReactComponent as HomeIcon } from "../../icons/home.svg";
 import { ReactComponent as UploadIcon } from "../../icons/upload.svg";
 import { ReactComponent as RecordsIcon } from "../../icons/records.svg";
-import ASRIcon from "../../icons/asr.png"; // Importar el PNG correctamente
-import "./Sidebar.css"; // Puedes seguir usando tu CSS o reemplazarlo con Tailwind
+import { ReactComponent as LogoutIcon } from "../../icons/logout.svg";
+import ASRIcon from "../../icons/asrlogo.png";
+import "./Sidebar.css";
 
 const Sidebar: React.FC = () => {
+  const { logOut } = useAppContext();
+  const navigate = useNavigate();
   const [activeLink, setActiveLink] = useState("");
-  const { logOut } = useAppContext(); // Obtener logOut del contexto
+
+  useEffect(() => {
+    // Establecer el enlace activo en función de la URL actual
+    setActiveLink(window.location.pathname);
+  }, []);
 
   const handleSetActive = (route: string) => {
     setActiveLink(route);
@@ -19,59 +26,70 @@ const Sidebar: React.FC = () => {
   const handleLogOut = async () => {
     try {
       await logOut();
-      // Redirigir al login después de cerrar sesión (si tienes una ruta definida)
-      window.location.href = "/login"; 
+      navigate("/login"); // Usa `navigate` en lugar de `window.location.href`
     } catch (error) {
       console.error("Error during logout:", error);
     }
   };
 
   return (
-    <div className="sidebar bg-gray-950 text-white h-full p-4 shadow-lg">
-      <div className="bg-white rounded-lg">
+    <div className="sidebar">
+      {/* Logo */}
+      <div className="bg-white rounded-lg mb-6">
         <div className="flex items-center justify-center p-4">
-          <img src={ASRIcon} alt="ASR Logo" className="w-24 h-24 object-contain" />
+          <img src={ASRIcon} alt="ASR Logo" className="w-64 h-48 object-contain" />
         </div>
       </div>
 
-      {/* Home */}
-      <div
-        className={`sidebar-item flex items-center p-2 rounded-lg ${
-          activeLink === ROUTES.HOME.path ? "bg-blue-800" : ""
-        }`}
-        onClick={() => handleSetActive(ROUTES.HOME.path)}
-      >
-        <HomeIcon className="w-6 h-6 mr-2" />
-        <Link to={ROUTES.HOME.path}>HOME</Link>
-      </div>
+      {/* Navigation Links */}
+      <nav className="flex flex-col gap-4 flex-1">
+        <NavLink
+          to={ROUTES.HOME.path}
+          className={({ isActive }) =>
+            `sidebar-item flex items-center p-2 rounded-lg ${
+              isActive ? "bg-blue-200" : "hover:bg-blue-100"
+            }`
+          }
+          onClick={() => handleSetActive(ROUTES.HOME.path)}
+        >
+          <HomeIcon className="w-6 h-6 mr-2" />
+          <span>INICIO</span>
+        </NavLink>
 
-      {/* Upload */}
-      <div
-        className={`sidebar-item flex items-center p-2 rounded-lg ${
-          activeLink === ROUTES.UPLOAD.path ? "bg-blue-800" : ""
-        }`}
-        onClick={() => handleSetActive(ROUTES.UPLOAD.path)}
-      >
-        <UploadIcon className="w-6 h-6 mr-2" />
-        <Link to={ROUTES.UPLOAD.path}>UPLOAD</Link>
-      </div>
+        <NavLink
+          to={ROUTES.UPLOAD.path}
+          className={({ isActive }) =>
+            `sidebar-item flex items-center p-2 rounded-lg ${
+              isActive ? "bg-blue-200" : "hover:bg-gray-100"
+            }`
+          }
+          onClick={() => handleSetActive(ROUTES.UPLOAD.path)}
+        >
+          <UploadIcon className="w-6 h-6 mr-2" />
+          <span>CARGAR FACTURA</span>
+        </NavLink>
 
-      {/* Records */}
-      <div
-        className={`sidebar-item flex items-center p-2 rounded-lg ${
-          activeLink === ROUTES.RECORDS.path ? "bg-blue-800" : ""
-        }`}
-        onClick={() => handleSetActive(ROUTES.RECORDS.path)}
-      >
-        <RecordsIcon className="w-6 h-6 mr-2" />
-        <Link to={ROUTES.RECORDS.path}>RECORDS</Link>
-      </div>
+        <NavLink
+          to={ROUTES.RECORDS.path}
+          className={({ isActive }) =>
+            `sidebar-item flex items-center p-2 rounded-lg ${
+              isActive ? "bg-blue-200" : "hover:bg-gray-100"
+            }`
+          }
+          onClick={() => handleSetActive(ROUTES.RECORDS.path)}
+        >
+          <RecordsIcon className="w-6 h-6 mr-2" />
+          <span>REGISTROS</span>
+        </NavLink>
+      </nav>
 
-      {/* Botón de Cerrar Sesión */}
-      <div className="sidebar-item flex items-center p-2 rounded-lg bg-red-600 mt-2 cursor-pointer">
-        <button className="w-full text-left text-white" onClick={handleLogOut}>
-          Log Out
-        </button>
+      {/* Logout */}
+      <div
+        className="sidebar-item flex items-center p-2 rounded-lg bg-red-600 hover:bg-red-500 text-white cursor-pointer"
+        onClick={handleLogOut}
+      >
+        <LogoutIcon className="w-6 h-6 mr-2" />
+        <span>CERRAR SESIÓN</span>
       </div>
     </div>
   );

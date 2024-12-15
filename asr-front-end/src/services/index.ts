@@ -1,2 +1,2 @@
-export { getFacturas, postFactura } from './facturas';
-export { getDetalleByFolio, postDetalle, putDetalle } from './detallefactura';
+export { getFacturas, postFactura, deleteFactura } from './facturas';
+export { getDetalleByFolio, postDetalle, putDetalle, deleteDetalleByFolio } from './detallefactura';

@@ -3,7 +3,11 @@
 }
 
 .sidebar-item {
-  @apply flex items-center p-2 rounded-lg font-semibold ml-3 mr-3 mb-2 cursor-pointer text-black shadow-md;
+  @apply flex items-center p-2 rounded-lg font-semibold ml-3 mr-3 mb-6 cursor-pointer text-black shadow-md;
+}
+
+.sidebar-lastitem {
+  @apply flex items-center p-2 mt-72 ml-3 mr-3 rounded-lg bg-red-600 hover:bg-red-500 text-white cursor-pointer shadow-md;
 }
 
 .sidebar-item svg {

@@ -42,11 +42,11 @@ const Sidebar: React.FC = () => {
       </div>
 
       {/* Navigation Links */}
-      <nav className="flex flex-col gap-4 flex-1">
+      <nav className="flex flex-col flex-1">
         <NavLink
           to={ROUTES.HOME.path}
           className={({ isActive }) =>
-            `sidebar-item flex items-center p-2 rounded-lg ${
+            `sidebar-item ${
               isActive ? "bg-blue-200" : "hover:bg-blue-100"
             }`
           }
@@ -59,7 +59,7 @@ const Sidebar: React.FC = () => {
         <NavLink
           to={ROUTES.UPLOAD.path}
           className={({ isActive }) =>
-            `sidebar-item flex items-center p-2 rounded-lg ${
+            `sidebar-item ${
               isActive ? "bg-blue-200" : "hover:bg-gray-100"
             }`
           }
@@ -72,7 +72,7 @@ const Sidebar: React.FC = () => {
         <NavLink
           to={ROUTES.RECORDS.path}
           className={({ isActive }) =>
-            `sidebar-item flex items-center p-2 rounded-lg ${
+            `sidebar-item ${
               isActive ? "bg-blue-200" : "hover:bg-gray-100"
             }`
           }
@@ -81,16 +81,16 @@ const Sidebar: React.FC = () => {
           <RecordsIcon className="w-6 h-6 mr-2" />
           <span>REGISTROS</span>
         </NavLink>
-      </nav>
 
-      {/* Logout */}
+        {/* Logout */}
       <div
-        className="sidebar-item flex items-center p-2 rounded-lg bg-red-600 hover:bg-red-500 text-white cursor-pointer"
+        className="sidebar-lastitem "
         onClick={handleLogOut}
       >
         <LogoutIcon className="w-6 h-6 mr-2" />
-        <span>CERRAR SESIÓN</span>
+        <span>SALIR</span>
       </div>
+      </nav>
     </div>
   );
 };

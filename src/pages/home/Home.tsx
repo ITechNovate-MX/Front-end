@@ -63,20 +63,28 @@ const Home: React.FC = () => {
 
           const existingMonth = yearlyData[year].monthlyData.find(item => item.month === month);
 
+          // Buscar detalles de la factura
           const detalle = detalles.find(d => d.facturaId === factura.folio);
+
+          // Convertir el total a MXN si es necesario
+          let totalInMXN = factura.total;
+          if (factura.moneda !== 'MXN' && detalle && detalle.tipoCambio) {
+            totalInMXN = factura.total * detalle.tipoCambio;
+          }
+
           const isOverdue = detalle ? detalle.estatus === 'vencida' : false;
           const isPending = detalle ? detalle.estatus === 'pendiente' : false;
 
           if (existingMonth) {
             existingMonth.invoices += 1;
-            existingMonth.totalAmount += factura.total;
+            existingMonth.totalAmount += totalInMXN; // Sumar en MXN
             if (isOverdue) existingMonth.overdue += 1;
             if (isPending) existingMonth.pending += 1;
           } else {
             yearlyData[year].monthlyData.push({
               month,
               invoices: 1,
-              totalAmount: factura.total,
+              totalAmount: totalInMXN, // Inicializar en MXN
               overdue: isOverdue ? 1 : 0,
               pending: isPending ? 1 : 0,
             });
@@ -85,7 +93,10 @@ const Home: React.FC = () => {
 
         const allYears = Object.values(yearlyData);
         const totalInvoices = facturas.length;
-        const totalAmount = facturas.reduce((sum, factura) => sum + factura.total, 0);
+        const totalAmount = facturas.reduce((sum, factura) => {
+          const detalle = detalles.find(d => d.facturaId === factura.folio);
+          return sum + (factura.moneda !== 'MXN' && detalle?.tipoCambio ? factura.total * detalle.tipoCambio : factura.total);
+        }, 0);
         const overdueInvoices = detalles.filter(d => d.estatus === 'vencida').length;
         const pendingInvoices = detalles.filter(d => d.estatus === 'pendiente').length;
 
@@ -108,24 +119,39 @@ const Home: React.FC = () => {
     return <p>Cargando datos...</p>;
   }
 
-  // Crear datasets para las gráficas por año
   const yearlyGraphs = data.yearlyData.map(yearData => {
     const barData = {
       labels: yearData.monthlyData.map(item => item.month),
       datasets: [
         {
-          label: `Facturación total (${yearData.year})`,
+          label: `Total Facturado en MXN`,
           data: yearData.monthlyData.map(item => item.totalAmount),
           backgroundColor: 'rgba(54, 162, 235, 0.6)',
         },
       ],
     };
 
+    const options = {
+      plugins: {
+        tooltip: {
+          callbacks: {
+            afterLabel: (tooltipItem: any) => {
+              const monthData = yearData.monthlyData[tooltipItem.dataIndex];
+              return [
+                `Facturas pendientes: ${monthData.pending}`,
+                `Facturas vencidas: ${monthData.overdue}`,
+              ];
+            },
+          },
+        },
+      },
+    };
+
     const lineData = {
       labels: yearData.monthlyData.map(item => item.month),
       datasets: [
         {
-          label: `Tendencia de facturación (${yearData.year})`,
+          label: `Tendencia de facturación (${yearData.year}) en MXN`,
           data: yearData.monthlyData.map(item => item.totalAmount),
           borderColor: 'rgba(75, 192, 192, 1)',
           fill: false,
@@ -134,10 +160,9 @@ const Home: React.FC = () => {
       ],
     };
 
-    return { year: yearData.year, barData, lineData };
+    return { year: yearData.year, barData, options, lineData };
   });
 
-  // Comparativa entre el año en curso y el anterior
   const currentYear = new Date().getFullYear();
   const previousYearData = data.yearlyData.find(y => y.year === currentYear - 1);
   const currentYearData = data.yearlyData.find(y => y.year === currentYear);
@@ -148,12 +173,12 @@ const Home: React.FC = () => {
       : currentYearData?.monthlyData.map(item => item.month) || [],
     datasets: [
       {
-        label: `Facturación (${currentYear - 1})`,
+        label: `Facturación (${currentYear - 1}) en MXN`,
         data: previousYearData ? previousYearData.monthlyData.map(item => item.totalAmount) : [],
         backgroundColor: 'rgba(255, 99, 132, 0.6)',
       },
       {
-        label: `Facturación (${currentYear})`,
+        label: `Facturación (${currentYear}) en MXN`,
         data: currentYearData ? currentYearData.monthlyData.map(item => item.totalAmount) : [],
         backgroundColor: 'rgba(54, 162, 235, 0.6)',
       },
@@ -180,7 +205,7 @@ const Home: React.FC = () => {
         <div key={graph.year} className="mt-10">
           <h2 className="text-2xl font-semibold text-blue-950 mb-4">Facturación Mensual ({graph.year})</h2>
           <div className="bg-white p-6 rounded-lg shadow-lg">
-            <Bar data={graph.barData} />
+            <Bar data={graph.barData} options={graph.options} />
           </div>
 
           <h2 className="text-2xl font-semibold text-blue-950 mt-6 mb-4">Tendencia de Facturación ({graph.year})</h2>

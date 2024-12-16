@@ -8,4 +8,5 @@ export interface IFactura {
     total:       number;
     metodoPago:  string;
     archivoXml:  string;
+    moneda:      string;
 }

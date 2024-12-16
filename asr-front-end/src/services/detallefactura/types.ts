@@ -5,4 +5,5 @@ export interface IDetalleFactura {
     estatus:          string;
     credito:          number;
     fechaPortal:      Date;
+    tipoCambio:       number;
 }

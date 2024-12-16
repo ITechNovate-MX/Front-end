@@ -1,13 +1,7 @@
 import httpInstance from "../httpInstance";
 
 export const postDetalle = async (
-    folio: number,
-    fechaEntrega: Date,
-    fechaVencimiento: Date,
-    estatus: string,
-    credito: number,
-    fechaPortal: Date
-): Promise<any> => {
+folio: number, fechaEntrega: Date, fechaVencimiento: Date, estatus: string, credito: number, fechaPortal: Date, tipoCambio: number): Promise<any> => {
     if (!folio) {
         return Promise.reject(new Error("No se seleccionó ningún archivo para subir."));
     }
@@ -20,6 +14,7 @@ export const postDetalle = async (
         estatus,
         credito,
         fechaPortal: fechaPortal.toISOString(),
+        tipoCambio,
     };
 
     try {

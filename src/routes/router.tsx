@@ -1,4 +1,4 @@
-import { Login, Home, Records, Register, Upload } from '../pages';
+import { Login, Home, Records, Register, Upload, Factura } from '../pages';
 import { Navigate, RouteObject, createBrowserRouter } from 'react-router-dom';
 import PrivateRouter from './PrivateRouter';
 import PublicRouter from './PublicRouter';
@@ -18,6 +18,7 @@ export const AppRouter = () => {
         { path: ROUTES.RECORDS.path, element: <Records /> },
         { path: ROUTES.REGISTER.path, element: <Register /> },
         { path: ROUTES.UPLOAD.path, element: <Upload /> },
+        { path: ROUTES.FACTURA.path, element: <Factura /> },
       ],
     },
     {

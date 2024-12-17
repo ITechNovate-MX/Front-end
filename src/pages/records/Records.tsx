@@ -41,7 +41,7 @@ const Records: React.FC = () => {
       <h1 className="text-4xl font-bold font-sans text-center text-blue-950 mb-8">
         Facturas Ingresadas
       </h1>
-      <div className="sm:grid-cols-2 lg:grid-cols-3 gap-6 px-8">
+      <div className="sm:grid-cols-2 lg:grid-cols-3 gap-y-10 px-8 " >
         {facturas.map((factura) => (
           <FacturaCard
             key={factura.folio}

@@ -1,17 +1,74 @@
 .factura-card__container {
-    @apply bg-white border border-gray-300 rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out;
-  }
-  
-  .factura-card__cliente {
-    @apply text-lg font-bold text-gray-800 mb-2;
-  }
-  
-  .factura-card__folio {
-    @apply text-sm text-gray-600 mb-1;
-  }
-  
-  .factura-card__total {
-    @apply text-lg font-semibold text-blue-600;
-   /* @apply text-md font-semibold text-blue-600;*/
-  }
-  
+  @apply flex flex-row items-center border border-gray-300 rounded-lg bg-white transition duration-300 ease-in-out p-4 w-full;
+}
+
+.factura-card__container:hover {
+  @apply shadow-md;
+}
+
+.factura-card__container.factura-card__container--vencida {
+  @apply border-x-8 border-red-500;
+}
+
+.factura-card__container.factura-card__container--en-proceso {
+  @apply border-x-8 border-green-500;
+}
+
+.factura-card__container.factura-card__container--pendiente {
+  @apply border-x-8 border-yellow-500;
+}
+
+.factura-card__container.factura-card__container--pagada {
+  @apply  bg-green-500 text-white ;
+}
+
+.factura-card__total.factura-card__total--pagada {
+  @apply text-white;
+}
+
+
+.factura-card__container.factura-card__container--default {
+  @apply border-x-8 border-gray-500;
+}
+
+
+
+.factura-card__content {
+  @apply grid grid-cols-6 pl-4 w-full;
+}
+
+.factura-card__header {
+  @apply  justify-between items-center mb-2;
+}
+
+.factura-card__cliente {
+  @apply text-lg font-bold;
+}
+
+.factura-card__estado {
+  @apply text-sm font-bold uppercase;
+}
+
+.factura-card__estado.factura-card__estado--vencida {
+  @apply text-red-500;
+}
+
+.factura-card__estado.factura-card__estado--en-proceso {
+  @apply text-green-500;
+}
+
+.factura-card__estado.factura-card__estado--pendiente {
+  @apply text-yellow-500;
+}
+
+.factura-card__estado.factura-card__estado--default {
+  @apply text-gray-500;
+}
+
+.factura-card__info {
+  @apply text-sm text-gray-600 mb-1;
+}
+
+.factura-card__total {
+  @apply text-lg font-bold text-blue-500 mt-3;
+}

@@ -1,0 +1,56 @@
+.detalle-form__container {
+    @apply flex flex-col border border-gray-300 rounded-lg bg-white shadow-md p-6 w-full max-w-lg mx-auto;
+  }
+  
+  .detalle-form__header {
+    @apply text-xl font-bold text-gray-800 mb-4 text-center;
+  }
+  
+  .detalle-form__field {
+    @apply mb-4;
+  }
+  
+  .detalle-form__label {
+    @apply block font-medium text-gray-700 mb-1;
+  }
+  
+  .detalle-form__input {
+    @apply border border-gray-300 rounded-lg w-full p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
+  }
+  
+  .detalle-form__input--error {
+    @apply border-red-500 focus:ring-red-500 focus:border-red-500;
+  }
+  
+  .detalle-form__hint {
+    @apply text-sm text-gray-500 mt-1;
+  }
+  
+  .detalle-form__error {
+    @apply text-sm text-red-500 mt-1;
+  }
+  
+  .detalle-form__button {
+    @apply bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out w-full;
+  }
+  
+  .detalle-form__button:disabled {
+    @apply bg-gray-300 text-gray-500 cursor-not-allowed;
+  }
+  
+  .detalle-form__summary {
+    @apply text-sm text-gray-600 mb-3;
+  }
+  
+  .detalle-form__summary strong {
+    @apply font-bold text-gray-800;
+  }
+  
+  .detalle-form__success-message {
+    @apply text-sm text-green-600 font-medium mt-4;
+  }
+  
+  .detalle-form__error-message {
+    @apply text-sm text-red-600 font-medium mt-4;
+  }
+  

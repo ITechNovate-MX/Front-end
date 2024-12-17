@@ -1,5 +1,5 @@
 .factura-card__container {
-  @apply flex flex-row items-center border border-gray-300 rounded-lg bg-white transition duration-300 ease-in-out p-4 w-full;
+  @apply flex flex-row items-center border border-gray-300 rounded-lg bg-white transition duration-300 ease-in-out p-4 w-full my-5 cursor-pointer;
 }
 
 .factura-card__container:hover {

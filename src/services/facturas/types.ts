@@ -10,3 +10,13 @@ export interface IFactura {
     archivoXml:  string;
     moneda:      string;
 }
+
+export interface IMaterial {
+    id: number;
+    noParte: string;
+    descripcion: string;
+    cantidad: number;
+    precioUnitario: number;
+    importe: number;
+    iva: number; 
+}

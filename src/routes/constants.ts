@@ -1,3 +1,5 @@
+import path from "path";
+
 export const ROUTES = {
     LOGIN: {
         path: '/login',
@@ -19,4 +21,8 @@ export const ROUTES = {
         path: '/upload',
         name: 'Upload'
     },
+    FACTURA: {
+        path: '/factura/:folio',
+        name: 'Factura'
+    }
 };

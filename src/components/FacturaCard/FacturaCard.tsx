@@ -2,6 +2,7 @@ import * as React from 'react';
 import './FacturaCard.css';
 import { IFactura } from '../../services/facturas/types';
 import { IDetalleFactura } from '../../services/detallefactura/types';
+import { useNavigate } from 'react-router-dom';
 
 interface FacturaCardProps {
   factura: IFactura;
@@ -13,6 +14,11 @@ interface FacturaCardProps {
 
 const FacturaCard: React.FC<FacturaCardProps> = ({ factura, detalleFactura }) => {
   const estado = detalleFactura?.estatus?.toUpperCase() || "SIN ESTADO";
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    navigate(`/factura/${factura.folio}`);
+  }
 
   const getEstadoClass = () => {
     switch (estado) {
@@ -53,7 +59,7 @@ const FacturaCard: React.FC<FacturaCardProps> = ({ factura, detalleFactura }) =>
   }
 
   return (
-    <div className={`factura-card__container ${getContainerClass()}`}>
+    <div className={`factura-card__container ${getContainerClass()}`} onClick={handleCardClick}>
       <div className="factura-card__content">
         <div className="factura-card__header">
           <h2 className="factura-card__cliente">#{factura.folio}</h2>

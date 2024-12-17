@@ -1,0 +1,30 @@
+.factura-page__container {
+    @apply p-6 bg-gray-50 min-h-screen;
+  }
+  
+  .factura-page__title {
+    @apply text-3xl font-bold text-gray-800 mb-4;
+  }
+  
+  .factura-page__section {
+    @apply mb-6 p-4 bg-white border border-gray-300 rounded-lg shadow-sm;
+  }
+  
+  .factura-page__detalle-item,
+  .factura-page__material-item {
+    @apply mb-4 p-2 border-b border-gray-200;
+  }
+  
+  .factura-page__detalle-item:last-child,
+  .factura-page__material-item:last-child {
+    @apply border-none;
+  }
+  
+  .factura-page__label {
+    @apply font-semibold text-gray-700;
+  }
+  
+  .factura-page__value {
+    @apply text-gray-600;
+  }
+  

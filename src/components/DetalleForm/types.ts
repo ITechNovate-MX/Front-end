@@ -4,6 +4,6 @@ export interface IDetalleForm {
     fechaVencimiento: Date;
     estatus: string;
     credito: number;
-    fechaPortal: Date;
+    fechaPortal: Date | null;
     tipoCambio: number;
 }

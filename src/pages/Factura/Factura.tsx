@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { getFacturaByFolio } from "../../services/facturas/getFacturaByFolio";
 import { getDetalleByFolio } from "../../services/detallefactura/getDetalleByFolio";
 import { getMateriales } from "../../services/facturas/getMateriales";
+import { Loader } from "../../components/Loader/Loader";
 import { putDetalle } from "../../services/detallefactura/putDetalle";
 import "./Factura.css";
 import { EditButton } from "../../components/EditButton";
@@ -87,7 +88,11 @@ const Factura: React.FC = () => {
   };
 
   if (!factura) {
-    return <p>Cargando información de la factura...</p>;
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader />
+      </div>
+    );
   }
 
   return (

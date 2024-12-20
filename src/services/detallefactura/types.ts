@@ -1,9 +1,9 @@
 export interface IDetalleFactura {
     facturaId:        number;
-    fechaEntrega:     Date;
-    fechaVencimiento: Date;
+    fechaEntrega:     any;
+    fechaVencimiento: any;
     estatus:          string;
     credito:          number;
-    fechaPortal:      Date;
-    tipoCambio:       number;
+    fechaPortal:      any;
+    tipoCambio:       number | null;
 }

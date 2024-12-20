@@ -1,15 +1,15 @@
 export interface IFactura {
     estado: any;
-    fechaEmision: string | number | Date;
-    folio:       number;
-    cliente:     string;
+    fechaEmision: any; // Nunca será null.
+    folio: number;
+    cliente: string;
     ordenCompra: string;
-    subtotal:    number;
-    total:       number;
-    metodoPago:  string;
-    archivoXml:  string;
-    moneda:      string;
-}
+    subtotal: number;
+    total: number;
+    metodoPago: string;
+    archivoXml: string;
+    moneda: string;
+  }
 
 export interface IMaterial {
     id: number;

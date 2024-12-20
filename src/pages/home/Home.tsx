@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
+import { Loader } from '../../components/Loader/Loader';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -116,7 +117,11 @@ const Home: React.FC = () => {
   }, []);
 
   if (!data) {
-    return <p>Cargando datos...</p>;
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader />
+      </div>
+    );
   }
 
   const yearlyGraphs = data.yearlyData.map(yearData => {

@@ -3,13 +3,18 @@ import { useParams } from "react-router-dom";
 import { getFacturaByFolio } from "../../services/facturas/getFacturaByFolio";
 import { getDetalleByFolio } from "../../services/detallefactura/getDetalleByFolio";
 import { getMateriales } from "../../services/facturas/getMateriales";
+import { putDetalle } from "../../services/detallefactura/putDetalle";
 import "./Factura.css";
+import { EditButton } from "../../components/EditButton";
+import { Loader } from "../../components/Loader";
 
 const Factura: React.FC = () => {
   const { folio } = useParams<{ folio: string }>();
   const [factura, setFactura] = useState<any | null>(null);
   const [detalleFactura, setDetalleFactura] = useState<any[]>([]);
   const [materiales, setMateriales] = useState<any[]>([]);
+  const [isEditing, setIsEditing] = useState(false); // Estado para activar/desactivar edición
+  const [editableDetalles, setEditableDetalles] = useState<any[]>([]); // Detalles editables
 
   useEffect(() => {
     const fetchFacturaData = async () => {
@@ -22,7 +27,6 @@ const Factura: React.FC = () => {
 
         setFactura(facturaData);
 
-        // Convertir las fechas en UTC a objetos Date válidos
         const detallesConFechaUTC = detalleData.map((detalle) => ({
           ...detalle,
           fechaEntrega: detalle.fechaEntrega ? new Date(detalle.fechaEntrega) : null,
@@ -33,6 +37,7 @@ const Factura: React.FC = () => {
         }));
 
         setDetalleFactura(detallesConFechaUTC);
+        setEditableDetalles(detallesConFechaUTC); // Inicia editableDetalles con los datos actuales
         setMateriales(materialesData);
       } catch (error) {
         console.error("Error al cargar los datos de la factura:", error);
@@ -42,7 +47,38 @@ const Factura: React.FC = () => {
     fetchFacturaData();
   }, [folio]);
 
-  // Función para formatear las fechas de forma segura
+  const handleEditClick = () => {
+    setIsEditing(true); // Activa el modo edición
+  };
+
+  const handleCancelEdit = () => {
+    setEditableDetalles(detalleFactura); // Restaura los valores originales
+    setIsEditing(false); // Desactiva el modo edición
+  };
+
+  const handleSaveChanges = async () => {
+    try {
+        console.log("Detalles editables antes de guardar:", editableDetalles);
+        for (const detalle of editableDetalles) {
+            console.log("Procesando detalle con Folio:", folio);
+            await putDetalle(parseInt(folio || "0"), detalle); // Llama al servicio usando el folio
+        }
+        setDetalleFactura(editableDetalles); // Actualiza los detalles originales con los cambios
+        setIsEditing(false); // Desactiva el modo edición
+        alert("Cambios guardados exitosamente.");
+    } catch (error) {
+        console.error("Error al guardar los cambios:", error);
+        alert("Error al guardar los cambios.");
+    }
+};
+
+
+  const handleFieldChange = (index: number, field: string, value: any) => {
+    const updatedDetalles = [...editableDetalles];
+    updatedDetalles[index][field] = value;
+    setEditableDetalles(updatedDetalles);
+  };
+
   const formatUTCDate = (date: Date | null): string => {
     if (!date || !(date instanceof Date) || isNaN(date.getTime())) {
       return "N/A";
@@ -57,6 +93,8 @@ const Factura: React.FC = () => {
   return (
     <div className="factura-page__container">
       <h1 className="factura-page__title">Factura: {factura.folio}</h1>
+
+      {/* Información de la Factura */}
       <div className="factura-page__section">
         <h2>Información de la Factura</h2>
         <p>
@@ -83,29 +121,72 @@ const Factura: React.FC = () => {
         </p>
       </div>
 
+      {/* Detalle de la Factura */}
       <div className="factura-page__section">
+        <div className="factura-page__edit-button-container">
+          <EditButton onClick={handleEditClick} />
+        </div>
         <h2>Detalle de la Factura</h2>
         {detalleFactura.length > 0 ? (
           <ul>
-            {detalleFactura.map((detalle, index) => (
+            {editableDetalles.map((detalle, index) => (
               <li key={index} className="factura-page__detalle-item">
                 <p>
                   <strong>Fecha de Entrega:</strong>{" "}
-                  {formatUTCDate(detalle.fechaEntrega)}
-                </p>
-                <p>
-                  <strong>Fecha de Vencimiento:</strong>{" "}
-                  {formatUTCDate(detalle.fechaVencimiento)}
-                </p>
-                <p>
-                  <strong>Estatus:</strong> {detalle.estatus}
-                </p>
-                <p>
-                  <strong>Crédito:</strong> {detalle.credito} días
+                  {isEditing ? (
+                    <input
+                      type="date"
+                      value={
+                        detalle.fechaEntrega
+                          ? new Date(detalle.fechaEntrega).toISOString().split("T")[0]
+                          : ""
+                      }
+                      onChange={(e) =>
+                        handleFieldChange(index, "fechaEntrega", e.target.value)
+                      }
+                    />
+                  ) : (
+                    formatUTCDate(detalle.fechaEntrega)
+                  )}
                 </p>
                 <p>
                   <strong>Fecha Portal:</strong>{" "}
-                  {formatUTCDate(detalle.fechaPortal)}
+                  {isEditing ? (
+                    <input
+                      type="date"
+                      value={
+                        detalle.fechaPortal
+                          ? new Date(detalle.fechaPortal).toISOString().split("T")[0]
+                          : ""
+                      }
+                      onChange={(e) =>
+                        handleFieldChange(index, "fechaPortal", e.target.value)
+                      }
+                    />
+                  ) : (
+                    formatUTCDate(detalle.fechaPortal)
+                  )}
+                </p>
+                <p>
+                  <strong>Estatus:</strong>{" "}
+                  {isEditing ? (
+                    <select
+                      value={detalle.estatus}
+                      onChange={(e) =>
+                        handleFieldChange(index, "estatus", e.target.value)
+                      }
+                    >
+                      <option value="en_progreso">En Progreso</option>
+                      <option value="pendiente">Pendiente</option>
+                      <option value="vencida">Vencida</option>
+                      <option value="pagada">Pagada</option>
+                    </select>
+                  ) : (
+                    detalle.estatus
+                  )}
+                </p>
+                <p>
+                  <strong>Crédito:</strong> {detalle.credito} días
                 </p>
                 <p>
                   <strong>Tipo de Cambio:</strong> {detalle.tipoCambio || "N/A"}
@@ -116,8 +197,25 @@ const Factura: React.FC = () => {
         ) : (
           <p>No hay detalles asociados a esta factura.</p>
         )}
+        {isEditing && (
+          <div className="factura-page__button-group">
+            <button
+              className="factura-page__save-button"
+              onClick={handleSaveChanges}
+            >
+              Guardar Cambios
+            </button>
+            <button
+              className="factura-page__cancel-button"
+              onClick={handleCancelEdit}
+            >
+              Cancelar
+            </button>
+          </div>
+        )}
       </div>
 
+      {/* Materiales */}
       <div className="factura-page__section">
         <h2>Materiales</h2>
         {materiales.length > 0 ? (

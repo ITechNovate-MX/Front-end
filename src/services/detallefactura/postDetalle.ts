@@ -6,10 +6,11 @@ export const postDetalle = async (
     fechaVencimiento: Date,
     estatus: string,
     credito: number,
-    fechaPortal: Date
+    fechaPortal: Date | null, // Permitir que `fechaPortal` sea opcional
+    tipoCambio: number
 ): Promise<any> => {
-    if (!folio) {
-        return Promise.reject(new Error("No se seleccionó ningún archivo para subir."));
+    if (!folio || !fechaEntrega || !fechaVencimiento || !estatus) {
+        return Promise.reject(new Error("Faltan datos obligatorios para guardar el detalle de la factura."));
     }
 
     // Crear el objeto de datos
@@ -19,8 +20,11 @@ export const postDetalle = async (
         fechaVencimiento: fechaVencimiento.toISOString(),
         estatus,
         credito,
-        fechaPortal: fechaPortal.toISOString(),
+        fechaPortal: fechaPortal ? fechaPortal.toISOString() : null, // Manejar `fechaPortal` opcionalmente
+        tipoCambio,
     };
+
+    console.log('Guardando detalle de factura:', payload);
 
     try {
         // Enviar el POST request

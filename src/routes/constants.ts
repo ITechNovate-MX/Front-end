@@ -13,10 +13,6 @@ export const ROUTES = {
         path: '/records',
         name: 'Records'
     },
-    REGISTER: {
-        path: '/register',
-        name: 'Register'
-    },
     UPLOAD: {
         path: '/upload',
         name: 'Upload'

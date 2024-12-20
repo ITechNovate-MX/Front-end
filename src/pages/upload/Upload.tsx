@@ -36,7 +36,8 @@ const Upload: React.FC = () => {
         detalle.fechaVencimiento,
         detalle.estatus,
         detalle.credito,
-        detalle.fechaPortal
+        detalle.fechaPortal,
+        detalle.tipoCambio
       );
       console.log('Detalle de factura guardado con éxito:', result);
       setStatusMessage('Detalle guardado correctamente.');

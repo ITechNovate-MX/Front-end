@@ -8,6 +8,7 @@ import { putDetalle } from "../../services/detallefactura/putDetalle";
 import { EditButton } from "../../components/EditButton";
 import "./Factura.css";
 
+
 const Factura: React.FC = () => {
   const { folio } = useParams<{ folio: string }>();
   const [factura, setFactura] = useState<any | null>(null);

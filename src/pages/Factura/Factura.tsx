@@ -5,9 +5,8 @@ import { getDetalleByFolio } from "../../services/detallefactura/getDetalleByFol
 import { getMateriales } from "../../services/facturas/getMateriales";
 import { Loader } from "../../components/Loader/Loader";
 import { putDetalle } from "../../services/detallefactura/putDetalle";
-import "./Factura.css";
 import { EditButton } from "../../components/EditButton";
-import { Loader } from "../../components/Loader";
+import "./Factura.css";
 
 const Factura: React.FC = () => {
   const { folio } = useParams<{ folio: string }>();
@@ -238,13 +237,13 @@ const Factura: React.FC = () => {
                 </p>
                 <p>
                   <strong>Precio Unitario:</strong> $
-                  {material.precioUnitario.toFixed(2)}
+                  {material.precioUnitario}
                 </p>
                 <p>
-                  <strong>Importe:</strong> ${material.importe.toFixed(2)}
+                  <strong>Importe:</strong> ${material.importe}
                 </p>
                 <p>
-                  <strong>IVA:</strong> ${material.iva.toFixed(2)}
+                  <strong>IVA:</strong> ${material.iva}
                 </p>
               </li>
             ))}

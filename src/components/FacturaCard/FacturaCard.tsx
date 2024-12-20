@@ -20,7 +20,6 @@ const FacturaCard: React.FC<FacturaCardProps> = ({ factura, detalleFactura }) =>
   ? "EN PROGRESO" 
   : detalleFactura?.estatus?.toUpperCase() || "SIN ESTADO";
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
-  const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleCardClick = () => {
@@ -29,11 +28,9 @@ const FacturaCard: React.FC<FacturaCardProps> = ({ factura, detalleFactura }) =>
 
   const handleDeleteClick = async () => {
     setIsDeleting(true);
-    setStatusMessage(null);
 
     try {
       await deleteFactura(factura.folio);
-      setStatusMessage("Factura eliminada correctamente.");
       console.log("Factura eliminada correctamente:", factura.folio);
 
       // Redirigir después de la eliminación
@@ -42,9 +39,7 @@ const FacturaCard: React.FC<FacturaCardProps> = ({ factura, detalleFactura }) =>
       }, 1500);
     } catch (error) {
       console.error("Error al eliminar la factura:", error);
-      setStatusMessage(
-        "Ocurrió un error al intentar eliminar la factura."
-      );
+
     } finally {
       setIsDeleting(false);
     }

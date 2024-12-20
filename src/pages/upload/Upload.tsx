@@ -4,6 +4,7 @@ import { postFactura } from '../../services';
 import { postDetalle } from '../../services';
 import { IDetalleForm } from '../../components/DetalleForm/types';
 import { DetalleForm } from '../../components/DetalleForm';
+import './Upload.css';
 
 const Upload: React.FC = () => {
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
@@ -48,7 +49,7 @@ const Upload: React.FC = () => {
 
   return (
     <div>
-      <h1 className="text-4xl font-bold font-sans text-center text-blue-800 mb-8">Ingreso de Facturas</h1>
+      <h1 className="titulo">Facturas</h1>
       <UploadCard
         title="Sube tu archivo de facturas"
         onFileUpload={handleFileUpload}

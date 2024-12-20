@@ -1,9 +1,17 @@
+.upload-page_cardcontainer{
+  @apply border-2  bg-white p-8 rounded-lg text-center shadow-md max-w-5xl h-[550px] flex items-center justify-center mx-auto;
+}
+
 .upload-card__container {
-    @apply border-2 border-dashed border-gray-300 p-5 rounded-lg text-center bg-gray-100 transition-shadow duration-300 ease-in-out;
+  @apply border-4 border-dashed  bg-blue-50 p-8 rounded-lg text-center shadow-md w-[80%] h-[80%] mx-auto flex flex-col items-center justify-center gap-4;
+  border-color: #190598;
   }
   
   .upload-card__title {
-    @apply text-lg mb-2 text-gray-800;
+    @apply font-bold mb-2;
+    color:#190598;
+    font-size: 1.25rem;
+
   }
   
   .upload-card__upload-area {
@@ -15,7 +23,8 @@
   }
   
   .upload-card__drag-text {
-    @apply text-sm mb-2 text-gray-600;
+    @apply text-sm mb-2 font-bold;
+    color:#190598;
   }
   
   .upload-card__input {
@@ -23,11 +32,14 @@
   }
   
   .upload-card__button {
-    @apply bg-orange-500 text-white px-5 py-2 rounded cursor-pointer transition-colors duration-200;
+    @apply text-white px-5 py-2 rounded cursor-pointer transition-colors duration-200;
+    background-color:#ff2f00;
+    border-color: #ff2f00;
+    margin-bottom: 2rem;
   }
   
   .upload-card__button:hover {
-    @apply bg-orange-600;
+    background-color:  #ff2f00cc;
   }
   
   .upload-card__message {
@@ -36,9 +48,18 @@
   
   .upload-card__message--success {
     @apply text-green-500;
+    margin-top: -5px; 
+    position: relative; 
+    top: -3px; 
   }
   
   .upload-card__message--error {
-    @apply text-red-500;
+    color: #ff2f00cc;
+    margin-top: -5px; 
+    position: relative; 
+    top: -3px; 
   }
   
+  .upload-card-svg{
+    margin-left: 4.5rem;
+  }

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../app-context/app-context';
 
+
 import './Login.css';
 
 const Login: React.FC = () => {
@@ -36,9 +37,11 @@ const Login: React.FC = () => {
 
   return (
     <div className="login-bg">
+      <div className="login-wcm">
+        <h1 className= "login-wheader">Bienvenido al Portal de Facturación</h1>
+      </div>
       <div className="login-overlay"></div>
       <div className="login-form-container">
-        <h1 className="text-2xl font-bold text-gray-800 mb-4">ASR Industrial</h1>
         <LoginForm
           onSubmit={handleSignIn}
           status={formStatus}

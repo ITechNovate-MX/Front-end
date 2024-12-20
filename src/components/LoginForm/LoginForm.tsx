@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ASRIcon from "../../icons/asrlogo.png";
 import './LoginForm.css';
 
 interface LoginFormProps {
@@ -32,6 +33,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
 
   return (
     <form className="LoginForm" onSubmit={handleSubmit}>
+      <img src={ASRIcon} alt="ASR Logo" className="form-logo" />
       <h2 className="form-title">Iniciar Sesión</h2>
       <div className="form-group">
         <label htmlFor="email">Email</label>

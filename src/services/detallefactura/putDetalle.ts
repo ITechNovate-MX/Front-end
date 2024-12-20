@@ -2,17 +2,17 @@ import httpInstance from "../httpInstance";
 import { IDetalleFactura } from "./types";
 
 export const putDetalle = async (
-    id: number, // ID del detalleFactura a actualizar
+    folio: number, // Folio de la factura a actualizar
     detalle: IDetalleFactura // Los nuevos datos para actualizar
 ): Promise<IDetalleFactura> => {
-    if (!id) {
-        return Promise.reject(new Error("El ID del detalle es requerido para actualizar."));
+    if (!folio) {
+        return Promise.reject(new Error("El folio de la factura es requerido para actualizar."));
     }
 
     try {
-        // Realizar la solicitud PUT
+        // Realizar la solicitud PUT con el folio
         const response = await httpInstance.put<IDetalleFactura>(
-            `/detallefactura/${id}`, // URL del endpoint
+            `/detallefactura/${folio}`, // URL con el folio de la factura
             detalle, // Objeto con los datos actualizados
             {
                 headers: {

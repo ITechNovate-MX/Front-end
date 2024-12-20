@@ -27,4 +27,27 @@
   .factura-page__value {
     @apply text-gray-600;
   }
+
+  .factura-page__edit-button-container {
+    @apply  place-items-end -m-1;
+    /* text-align: right;
+    margin-bottom: 10px; */
+  }
   
+  .factura-page__save-button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .factura-page__save-button:hover {
+    background-color: #45a049;
+  }
+  
+  .factura-page__cancel-button{
+    @apply bg-red-500 text-white px-4 py-2 rounded-md ml-10;
+  }

@@ -19,4 +19,5 @@ export interface IMaterial {
     precioUnitario: number;
     importe: number;
     iva: number; 
+    factura: IFactura;
 }

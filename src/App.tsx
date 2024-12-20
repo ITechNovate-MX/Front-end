@@ -7,11 +7,7 @@ const App = () => {
 
   return (
     <>
-    {loadingContext ? (
-      <div>Loading...</div>
-    ) : (
       <RouterProvider router={AppRouter()} />
-    )}
     </>
   );
 }

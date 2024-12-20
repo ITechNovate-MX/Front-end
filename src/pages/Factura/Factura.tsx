@@ -5,9 +5,8 @@ import { getDetalleByFolio } from "../../services/detallefactura/getDetalleByFol
 import { getMateriales } from "../../services/facturas/getMateriales";
 import { Loader } from "../../components/Loader/Loader";
 import { putDetalle } from "../../services/detallefactura/putDetalle";
-import "./Factura.css";
 import { EditButton } from "../../components/EditButton";
-import { Loader } from "../../components/Loader";
+import "./Factura.css";
 
 const Factura: React.FC = () => {
   const { folio } = useParams<{ folio: string }>();
@@ -59,20 +58,19 @@ const Factura: React.FC = () => {
 
   const handleSaveChanges = async () => {
     try {
-        console.log("Detalles editables antes de guardar:", editableDetalles);
-        for (const detalle of editableDetalles) {
-            console.log("Procesando detalle con Folio:", folio);
-            await putDetalle(parseInt(folio || "0"), detalle); // Llama al servicio usando el folio
-        }
-        setDetalleFactura(editableDetalles); // Actualiza los detalles originales con los cambios
-        setIsEditing(false); // Desactiva el modo edición
-        alert("Cambios guardados exitosamente.");
+      console.log("Detalles editables antes de guardar:", editableDetalles);
+      for (const detalle of editableDetalles) {
+        console.log("Procesando detalle con Folio:", folio);
+        await putDetalle(parseInt(folio || "0"), detalle); // Llama al servicio usando el folio
+      }
+      setDetalleFactura(editableDetalles); // Actualiza los detalles originales con los cambios
+      setIsEditing(false); // Desactiva el modo edición
+      alert("Cambios guardados exitosamente.");
     } catch (error) {
-        console.error("Error al guardar los cambios:", error);
-        alert("Error al guardar los cambios.");
+      console.error("Error al guardar los cambios:", error);
+      alert("Error al guardar los cambios.");
     }
-};
-
+  };
 
   const handleFieldChange = (index: number, field: string, value: any) => {
     const updatedDetalles = [...editableDetalles];
@@ -101,29 +99,30 @@ const Factura: React.FC = () => {
 
       {/* Información de la Factura */}
       <div className="factura-page__section">
-        <h2>Información de la Factura</h2>
-        <p>
-          <strong>Fecha de Emisión:</strong>{" "}
-          {formatUTCDate(new Date(factura.fechaEmision))}
-        </p>
-        <p>
-          <strong>Cliente:</strong> {factura.cliente}
-        </p>
-        <p>
-          <strong>Orden de Compra:</strong> {factura.ordenCompra}
-        </p>
-        <p>
-          <strong>Método de Pago:</strong> {factura.metodoPago}
-        </p>
-        <p>
-          <strong>Moneda:</strong> {factura.moneda}
-        </p>
-        <p>
-          <strong>Total:</strong> ${factura.total.toFixed(2)}
-        </p>
-        <p>
-          <strong>Subtotal:</strong> ${factura.subtotal.toFixed(2)}
-        </p>
+        <h2 className="factura-page__sectiontitle">Información de la Factura</h2>
+        <div className="factura-page__grid">
+          <div className="factura-page__item">
+            <p><strong>Fecha de Emisión:</strong> {formatUTCDate(new Date(factura.fechaEmision))}</p>
+          </div>
+          <div className="factura-page__item">
+            <p><strong>Cliente:</strong> {factura.cliente}</p>
+          </div>
+          <div className="factura-page__item">
+            <p><strong>Orden de Compra:</strong> {factura.ordenCompra}</p>
+          </div>
+          <div className="factura-page__item">
+            <p><strong>Método de Pago:</strong> {factura.metodoPago}</p>
+          </div>
+          <div className="factura-page__item">
+            <p><strong>Moneda:</strong> {factura.moneda}</p>
+          </div>
+          <div className="factura-page__item">
+            <p><strong>Total:</strong> ${factura.total.toFixed(2)}</p>
+          </div>
+          <div className="factura-page__item">
+            <p><strong>Subtotal:</strong> ${factura.subtotal.toFixed(2)}</p>
+          </div>
+        </div>
       </div>
 
       {/* Detalle de la Factura */}
@@ -131,71 +130,74 @@ const Factura: React.FC = () => {
         <div className="factura-page__edit-button-container">
           <EditButton onClick={handleEditClick} />
         </div>
-        <h2>Detalle de la Factura</h2>
+        <h2 className="factura-page__sectiontitle">Detalle de la Factura</h2>
         {detalleFactura.length > 0 ? (
           <ul>
             {editableDetalles.map((detalle, index) => (
               <li key={index} className="factura-page__detalle-item">
-                <p>
-                  <strong>Fecha de Entrega:</strong>{" "}
-                  {isEditing ? (
-                    <input
-                      type="date"
-                      value={
-                        detalle.fechaEntrega
-                          ? new Date(detalle.fechaEntrega).toISOString().split("T")[0]
-                          : ""
-                      }
-                      onChange={(e) =>
-                        handleFieldChange(index, "fechaEntrega", e.target.value)
-                      }
-                    />
-                  ) : (
-                    formatUTCDate(detalle.fechaEntrega)
-                  )}
-                </p>
-                <p>
-                  <strong>Fecha Portal:</strong>{" "}
-                  {isEditing ? (
-                    <input
-                      type="date"
-                      value={
-                        detalle.fechaPortal
-                          ? new Date(detalle.fechaPortal).toISOString().split("T")[0]
-                          : ""
-                      }
-                      onChange={(e) =>
-                        handleFieldChange(index, "fechaPortal", e.target.value)
-                      }
-                    />
-                  ) : (
-                    formatUTCDate(detalle.fechaPortal)
-                  )}
-                </p>
-                <p>
-                  <strong>Estatus:</strong>{" "}
-                  {isEditing ? (
-                    <select
-                      value={detalle.estatus}
-                      onChange={(e) =>
-                        handleFieldChange(index, "estatus", e.target.value)
-                      }
-                    >
-                      <option value="en_progreso">En Progreso</option>
-                      <option value="pendiente">Pendiente</option>
-                      <option value="vencida">Vencida</option>
-                      <option value="pagada">Pagada</option>
-                    </select>
-                  ) : (
-                    detalle.estatus
-                  )}
-                </p>
-                <p>
-                  <strong>Crédito:</strong> {detalle.credito} días
-                </p>
-                <p>
-                  <strong>Tipo de Cambio:</strong> {detalle.tipoCambio || "N/A"}
-                </p>
+                <div className="factura-page__item">
+                  <p><strong>Fecha de Entrega:</strong> 
+                    {isEditing ? (
+                      <input
+                        type="date"
+                        value={
+                          detalle.fechaEntrega
+                            ? new Date(detalle.fechaEntrega).toISOString().split("T")[0]
+                            : ""
+                        }
+                        onChange={(e) =>
+                          handleFieldChange(index, "fechaEntrega", e.target.value)
+                        }
+                      />
+                    ) : (
+                      formatUTCDate(detalle.fechaEntrega)
+                    )}
+                  </p>
+                </div>
+                <div className="factura-page__item">
+                  <p><strong>Fecha Portal:</strong> 
+                    {isEditing ? (
+                      <input
+                        type="date"
+                        value={
+                          detalle.fechaPortal
+                            ? new Date(detalle.fechaPortal).toISOString().split("T")[0]
+                            : ""
+                        }
+                        onChange={(e) =>
+                          handleFieldChange(index, "fechaPortal", e.target.value)
+                        }
+                      />
+                    ) : (
+                      formatUTCDate(detalle.fechaPortal)
+                    )}
+                  </p>
+                </div>
+                <div className="factura-page__item">
+                  <p><strong>Estatus:</strong> 
+                    {isEditing ? (
+                      <select
+                        value={detalle.estatus}
+                        onChange={(e) =>
+                          handleFieldChange(index, "estatus", e.target.value)
+                        }
+                      >
+                        <option value="en_progreso">En Progreso</option>
+                        <option value="pendiente">Pendiente</option>
+                        <option value="vencida">Vencida</option>
+                        <option value="pagada">Pagada</option>
+                      </select>
+                    ) : (
+                      detalle.estatus
+                    )}
+                  </p>
+                </div>
+                <div className="factura-page__item">
+                  <p><strong>Crédito:</strong> {detalle.credito} días</p>
+                </div>
+                <div className="factura-page__item">
+                  <p><strong>Tipo de Cambio:</strong> {detalle.tipoCambio || "N/A"}</p>
+                </div>
               </li>
             ))}
           </ul>
@@ -222,30 +224,26 @@ const Factura: React.FC = () => {
 
       {/* Materiales */}
       <div className="factura-page__section">
-        <h2>Materiales</h2>
+        <h2 className="factura-page__sectiontitle">Materiales</h2>
         {materiales.length > 0 ? (
           <ul>
             {materiales.map((material) => (
               <li key={material.id} className="factura-page__material-item">
-                <p>
-                  <strong>No. Parte:</strong> {material.noParte}
-                </p>
-                <p>
-                  <strong>Descripción:</strong> {material.descripcion}
-                </p>
-                <p>
-                  <strong>Cantidad:</strong> {material.cantidad}
-                </p>
-                <p>
-                  <strong>Precio Unitario:</strong> $
-                  {material.precioUnitario.toFixed(2)}
-                </p>
-                <p>
-                  <strong>Importe:</strong> ${material.importe.toFixed(2)}
-                </p>
-                <p>
-                  <strong>IVA:</strong> ${material.iva.toFixed(2)}
-                </p>
+                <div className="factura-page__item">
+                  <p><strong>Descripción:</strong> {material.descripcion}</p>
+                </div>
+                <div className="factura-page__item">
+                  <p><strong>Cantidad:</strong> {material.cantidad}</p>
+                </div>
+                <div className="factura-page__item">
+                  <p><strong>Precio Unitario:</strong> ${material.precioUnitario}</p>
+                </div>
+                <div className="factura-page__item">
+                  <p><strong>Importe:</strong> ${material.importe}</p>
+                </div>
+                <div className="factura-page__item">
+                  <p><strong>IVA:</strong> ${material.iva}</p>
+                </div>
               </li>
             ))}
           </ul>
@@ -258,3 +256,4 @@ const Factura: React.FC = () => {
 };
 
 export default Factura;
+

@@ -5,8 +5,8 @@ import { getDetalleByFolio } from "../../services/detallefactura/getDetalleByFol
 import { getMateriales } from "../../services/facturas/getMateriales";
 import { Loader } from "../../components/Loader/Loader";
 import { putDetalle } from "../../services/detallefactura/putDetalle";
-import "./Factura.css";
 import { EditButton } from "../../components/EditButton";
+import "./Factura.css";
 
 
 const Factura: React.FC = () => {

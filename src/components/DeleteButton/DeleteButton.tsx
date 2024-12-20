@@ -5,7 +5,7 @@ import './DeleteButton.css';
 export const DeleteButton: React.FC<DeleteButtonProps> = ({ onClick }) => {
     return (
         /* From Uiverse.io by vinodjangid07 */ 
-        <button className="deleteButton">
+        <button className="deleteButton" onClick={onClick}>
         <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

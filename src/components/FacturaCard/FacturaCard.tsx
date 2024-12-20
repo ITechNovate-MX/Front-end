@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import './FacturaCard.css';
 import { IFactura } from '../../services/facturas/types';
 import { IDetalleFactura } from '../../services/detallefactura/types';
 import { useNavigate } from 'react-router-dom';
 import { DeleteButton } from '../DeleteButton';
 import { deleteFactura } from '../../services';
-
+import { getMateriales } from "../../services/";
+import { getCatalogo } from "../../Utils/utils";
 
 interface FacturaCardProps {
   factura: IFactura;
@@ -16,16 +17,36 @@ interface FacturaCardProps {
 }
 
 const FacturaCard: React.FC<FacturaCardProps> = ({ factura, detalleFactura }) => {
-  const estado = detalleFactura?.estatus?.toUpperCase() === "EN_PROGRESO" 
-  ? "EN PROGRESO" 
-  : detalleFactura?.estatus?.toUpperCase() || "SIN ESTADO";
+  const estado = detalleFactura?.estatus?.toUpperCase() === "EN_PROGRESO"
+    ? "EN PROGRESO"
+    : detalleFactura?.estatus?.toUpperCase() || "SIN ESTADO";
+
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [ordenCompra, setOrdenCompra] = useState<string>(factura.ordenCompra || "N/A");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchMateriales = async () => {
+      if (factura.ordenCompra === "No especificado") {
+        try {
+          const materiales = await getMateriales(factura.folio);
+          if (materiales.length > 0) {
+            const catalogo = getCatalogo(materiales[0]?.descripcion || "");
+            setOrdenCompra(catalogo || "N/A");
+          }
+        } catch (error) {
+          console.error(`Error al cargar los materiales para la factura ${factura.folio}:`, error);
+        }
+      }
+    };
+
+    fetchMateriales();
+  }, [factura.ordenCompra, factura.folio]);
 
   const handleCardClick = () => {
     navigate(`/factura/${factura.folio}`);
-  }
+  };
 
   const handleDeleteClick = async () => {
     setIsDeleting(true);
@@ -74,11 +95,12 @@ const FacturaCard: React.FC<FacturaCardProps> = ({ factura, detalleFactura }) =>
       case "PENDIENTE":
         return "factura-card__container--pendiente";
       case "PAGADA":
-        return "factura-card__container--pagada"; 
+        return "factura-card__container--pagada";
       default:
         return "";
     }
   };
+
   const getTotalClass = () => {
     switch (estado) {
       case "PAGADA":
@@ -86,7 +108,7 @@ const FacturaCard: React.FC<FacturaCardProps> = ({ factura, detalleFactura }) =>
       default:
         return "factura-card__total--default";
     }
-  }
+  };
 
   return (
     <div className={`factura-card__container ${getContainerClass()}`} onClick={handleCardClick}>
@@ -95,14 +117,14 @@ const FacturaCard: React.FC<FacturaCardProps> = ({ factura, detalleFactura }) =>
           <h2 className="font-bold text-blue-950 text-xl">{factura.folio}</h2>
           {factura.fechaEmision ? factura.fechaEmision : "N/A"}
           <p className='font-bold'>{factura.moneda}</p>
-      </div>
-        
+        </div>
+
         <p className="factura-card__info">
           {factura.cliente || "N/A"}
         </p>
         <p className="factura-card__info">
-          <strong>OC</strong> 
-          <p>{factura.ordenCompra || "N/A"}</p>
+          <strong>OC</strong>
+          <p>{ordenCompra}</p>
         </p>
 
         {detalleFactura && (
@@ -122,22 +144,22 @@ const FacturaCard: React.FC<FacturaCardProps> = ({ factura, detalleFactura }) =>
           </div>
         )}
         <p className="factura-card__info">
-              <strong>Vencimiento</strong>{" "}
-              {detalleFactura?.fechaVencimiento
-                ? detalleFactura.fechaVencimiento
-                : "N/A"}
+          <strong>Vencimiento</strong>{" "}
+          {detalleFactura?.fechaVencimiento
+            ? detalleFactura.fechaVencimiento
+            : "N/A"}
         </p>
         <p className="factura-card__info">
           <strong>Crédito:</strong> {detalleFactura?.credito || "N/A"}
         </p>
-      
+
         <p className={`factura-card__info ${getTotalClass()}`}>
-          <strong>Total</strong> 
+          <strong>Total</strong>
           <p>${factura.total?.toFixed(2) || "0.00"}</p>
         </p>
-        
+
         <p className={`factura-card__estado ${getEstadoClass()}`}>{estado}</p>
-        
+
         <p className='factura-card__deletebutton'><DeleteButton onClick={handleDeleteClick} /></p>
       </div>
     </div>

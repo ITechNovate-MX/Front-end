@@ -43,6 +43,25 @@ interface InvoiceData {
 const Home: React.FC = () => {
   const [data, setData] = useState<InvoiceData | null>(null);
 
+  const months = [
+    'enero',
+    'febrero',
+    'marzo',
+    'abril',
+    'mayo',
+    'junio',
+    'julio',
+    'agosto',
+    'septiembre',
+    'octubre',
+    'noviembre',
+    'diciembre',
+  ];
+
+  const normalizeToStartOfDayUTC = (date: Date): Date => {
+    return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -52,11 +71,11 @@ const Home: React.FC = () => {
         const yearlyData: Record<number, YearlyData> = {};
 
         facturas.forEach(factura => {
-          // Parsear fecha de emisión correctamente en UTC
-          const date = new Date(factura.fechaEmision);
+          // Redondear la fecha de emisión al inicio del día en UTC
+          const date = normalizeToStartOfDayUTC(new Date(factura.fechaEmision));
           const year = date.getUTCFullYear(); // Obtener el año en UTC
           const monthIndex = date.getUTCMonth(); // Obtener el índice del mes en UTC (0 = enero, 1 = febrero, ...)
-          const month = new Date(Date.UTC(year, monthIndex)).toLocaleString('es-ES', { month: 'long' }); // Nombre del mes en español
+          const month = months[monthIndex]; // Obtener el nombre del mes a partir del índice
 
           if (!yearlyData[year]) {
             yearlyData[year] = {

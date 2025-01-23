@@ -3,7 +3,7 @@ export interface IDetalleFactura {
     fechaEntrega:     any;
     fechaVencimiento: any;
     estatus:          string;
-    credito:          number;
-    fechaPortal:      any;
+    credito:          number | null;
+    fechaPortal:      any | null;
     tipoCambio:       number | null;
 }

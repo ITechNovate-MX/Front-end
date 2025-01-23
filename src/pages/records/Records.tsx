@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import FacturaCard from "../../components/FacturaCard/FacturaCard";
+
 import { IFactura } from "../../services/facturas/types";
 import { getFacturas } from "../../services/facturas/getFacturas";
 import { IDetalleFactura } from "../../services/detallefactura/types";
 import { getDetalles } from "../../services/detallefactura/getDetalles";
 import { Loader } from "../../components/Loader/Loader";
+import FacturaCard from "../../components/FacturaCard/FacturaCard";
+import "./Records.css";
 
 const safeDate = (value: string | number | Date): Date => {
   const parsedDate = new Date(value);
@@ -25,12 +27,13 @@ const Records: React.FC = () => {
   const [facturas, setFacturas] = useState<IFactura[]>([]);
   const [detallesMap, setDetallesMap] = useState<{ [key: number]: IDetalleFactura | null }>({});
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const facturasPerPage = 15;
+  const [currentPage, setCurrentPage] = useState<string>("Ene24");
+  const [indexPage, setIndexPage] = useState<number>(0); // Página de índices
+  const indicesPerPage = 10; // Número de índices por página
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true); // Activar el estado de carga
+      setIsLoading(true);
       try {
         const [facturasData, detallesData] = await Promise.all([getFacturas(), getDetalles(0)]);
 
@@ -57,22 +60,46 @@ const Records: React.FC = () => {
       } catch (error) {
         console.error("Error al cargar los datos:", error);
       } finally {
-        setIsLoading(false); // Desactivar el estado de carga
+        setIsLoading(false);
       }
     };
 
     fetchData();
   }, []);
 
-  const handlePageChange = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
+  const getPageIndex = (date: Date): string => {
+    const monthAbbreviation = date.toLocaleDateString("es-MX", { month: "short" }).toUpperCase();
+    const year = date.getUTCFullYear().toString().slice(-2);
+    return `${monthAbbreviation}${year}`;
   };
 
-  const indexOfLastFactura = currentPage * facturasPerPage;
-  const indexOfFirstFactura = indexOfLastFactura - facturasPerPage;
-  const currentFacturas = facturas.slice(indexOfFirstFactura, indexOfLastFactura);
+  const facturasByPage = facturas.reduce((acc, factura) => {
+    const pageIndex = getPageIndex(new Date(factura.fechaEmision));
+    if (!acc[pageIndex]) {
+      acc[pageIndex] = [];
+    }
+    acc[pageIndex].push(factura);
+    return acc;
+  }, {} as Record<string, IFactura[]>);
 
-  const totalPages = Math.ceil(facturas.length / facturasPerPage);
+  const pageKeys = Object.keys(facturasByPage).sort(
+    (a, b) => new Date(facturasByPage[a][0].fechaEmision).getTime() - new Date(facturasByPage[b][0].fechaEmision).getTime()
+  );
+
+  const currentFacturas = facturasByPage[currentPage] || [];
+
+  // Paginación de los índices
+  const startIndex = indexPage * indicesPerPage;
+  const endIndex = startIndex + indicesPerPage;
+  const visiblePageKeys = pageKeys.slice(startIndex, endIndex);
+
+  const handlePrevIndexPage = () => {
+    if (indexPage > 0) setIndexPage(indexPage - 1);
+  };
+
+  const handleNextIndexPage = () => {
+    if (endIndex < pageKeys.length) setIndexPage(indexPage + 1);
+  };
 
   if (isLoading) {
     return (
@@ -84,51 +111,61 @@ const Records: React.FC = () => {
 
   return (
     <div>
-      <h1 className="text-4xl font-bold font-sans text-center text-blue-950 mb-8">
-        Facturas Ingresadas
-      </h1>
-      <div className="sm:grid-cols-2 lg:grid-cols-3 gap-6 cursor-pointer">
-        {currentFacturas.map((factura) => (
-          <FacturaCard
-            key={factura.folio}
-            cliente={factura.cliente}
-            folio={factura.folio}
-            total={factura.total}
-            factura={{
-              ...factura,
-              fechaEmision: formatUTCDate(new Date(factura.fechaEmision)),
-            }}
-            detalleFactura={
-              detallesMap[factura.folio]
-                ? {
-                    ...detallesMap[factura.folio]!,
-                    fechaEntrega: formatUTCDate(detallesMap[factura.folio]!.fechaEntrega),
-                    fechaVencimiento: formatUTCDate(
-                      detallesMap[factura.folio]!.fechaVencimiento
-                    ),
-                    fechaPortal: detallesMap[factura.folio]?.fechaPortal
-                      ? formatUTCDate(detallesMap[factura.folio]!.fechaPortal)
-                      : "N/A",
-                  }
-                : null
-            }
-          />
-        ))}
-      </div>
-      <div className="flex justify-center">
-        {[...Array(totalPages)].map((_, index) => (
+      <h1 className="top-title">Facturas Ingresadas</h1>
+      {currentFacturas.map((factura) => (
+        <FacturaCard
+          key={factura.folio}
+          cliente={factura.cliente}
+          folio={factura.folio}
+          total={factura.total}
+          factura={{
+            ...factura,
+            fechaEmision: formatUTCDate(new Date(factura.fechaEmision)),
+          }}
+          detalleFactura={
+            detallesMap[factura.folio]
+              ? {
+                  ...detallesMap[factura.folio]!,
+                  fechaEntrega: formatUTCDate(detallesMap[factura.folio]!.fechaEntrega),
+                  fechaVencimiento: formatUTCDate(
+                    detallesMap[factura.folio]!.fechaVencimiento
+                  ),
+                  fechaPortal: detallesMap[factura.folio]?.fechaPortal
+                    ? formatUTCDate(detallesMap[factura.folio]!.fechaPortal)
+                    : "N/A",
+                }
+              : null
+          }
+        />
+      ))}
+      <div className="page-bar">
+        <button
+          onClick={handlePrevIndexPage}
+          className="page-bar-elements bg-gray-200 text-black hover:bg-gray-300 mx-1"
+          disabled={indexPage === 0}
+        >
+          Prev
+        </button>
+        {visiblePageKeys.map((pageKey) => (
           <button
-            key={index}
-            className={`flex items-center justify-center text-2xl font-bold w-12 h-12 rounded-full ${
-              currentPage === index + 1
+            key={pageKey}
+            className={`page-bar-elements ${
+              currentPage === pageKey
                 ? "bg-blue-500 text-white"
                 : "bg-gray-200 text-black hover:bg-gray-300"
             } mx-1`}
-            onClick={() => handlePageChange(index + 1)}
+            onClick={() => setCurrentPage(pageKey)}
           >
-            {index + 1}
+            {pageKey}
           </button>
         ))}
+        <button
+          onClick={handleNextIndexPage}
+          className="page-bar-elements bg-gray-200 text-black hover:bg-gray-300 mx-1"
+          disabled={endIndex >= pageKeys.length}
+        >
+          Next
+        </button>
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ const PrivateRouter = () => {
   return (
     <div className="flex min-h-screen">
       {/* Sidebar fija */}
-      <aside className="w-64 h-screen bg-white fixed shadow-xl">
+      <aside className="w-60 h-screen bg-white fixed ">
         <Sidebar />
       </aside>
 

@@ -1,11 +1,10 @@
 import React, { useRef, useState } from 'react';
-import './UploadCard.css';
+
 import { IUploadCard } from './types';
 import { ReactComponent as FileUploadIcon } from "../../icons/file_upload.svg";
 
-/**
- * UploadCard - Componente para manejar la carga de archivos.
- */
+import './UploadCard.css';
+
 const UploadCard: React.FC<IUploadCard> = ({
   title,
   onFileUpload,
@@ -69,7 +68,7 @@ const UploadCard: React.FC<IUploadCard> = ({
             <FileUploadIcon className='upload-card-svg' />
           </div>
           <span className="upload-card__drag-text">
-            {isDragOver ? 'Suelta el archivo aquí' : 'Arrastra para subir el archivo o'}
+            {isDragOver ? 'Suelta el archivo aquí' : 'Arrastra para subir el archivo'}
           </span>
           <input
             type="file"

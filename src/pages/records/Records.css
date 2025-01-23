@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Título de la página formato estándar */
+.top-title {
+   @apply text-4xl font-bold text-center text-blue-900 mb-8;
+}
+
+/* Contenedor de la barra de navegación */
+.page-bar {
+   @apply flex justify-center  mt-6 mb-6; /* Espaciado entre botones y márgenes */
+}
+
+/* Elementos de la barra de navegación */
+.page-bar-elements {
+   @apply flex items-center justify-center text-lg font-semibold w-fit h-12 p-2 rounded-lg shadow-md;
+}

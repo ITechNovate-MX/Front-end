@@ -1,19 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Contenedor del componente */
 .upload-page_cardcontainer{
   @apply border-2  bg-white p-8 rounded-lg text-center shadow-md max-w-5xl h-[550px] flex items-center justify-center mx-auto;
 }
 
+/* Contenedor esqueleto del componente */
 .upload-card__container {
-  @apply border-4 border-dashed  bg-blue-50 p-8 rounded-lg text-center shadow-md w-[80%] h-[80%] mx-auto flex flex-col items-center justify-center gap-4;
-  border-color: #190598;
+  @apply border-2 border-dashed border-gray-400  bg-blue-50 p-8 text-center shadow-md w-[80%] h-[80%] mx-auto flex flex-col items-center justify-center gap-4;
   }
-  
+/* Elementos del componente */
   .upload-card__title {
-    @apply font-bold mb-2;
-    color:#190598;
-    font-size: 1.25rem;
+    @apply text-xl font-bold text-center text-blue-900 mb-3;
 
   }
-  
   .upload-card__upload-area {
     @apply flex flex-col items-center my-4;
   }
@@ -23,8 +25,7 @@
   }
   
   .upload-card__drag-text {
-    @apply text-sm mb-2 font-bold;
-    color:#190598;
+    @apply text-sm mb-2 font-bold text-center text-blue-900;
   }
   
   .upload-card__input {
@@ -33,9 +34,7 @@
   
   .upload-card__button {
     @apply text-white px-5 py-2 rounded cursor-pointer transition-colors duration-200;
-    background-color:#ff2f00;
-    border-color: #ff2f00;
-    margin-bottom: 2rem;
+    background-color:  #ff2f00;
   }
   
   .upload-card__button:hover {

@@ -35,60 +35,60 @@ const Sidebar: React.FC = () => {
   return (
     <div className="sidebar">
       {/* Logo */}
-      <div className="bg-white rounded-lg mb-6">
-        <div className="flex items-center justify-center p-4">
-          <img src={ASRIcon} alt="ASR Logo" className="w-64 h-48 object-contain" />
+        <div className="top-item-container">
+          <img src={ASRIcon} alt="ASR Logo" className="top-item-element" />
         </div>
-      </div>
 
-      {/* Navigation Links */}
+      {/* Navegación Principal */}
+      <h1 className="divider">PRINCIPAL</h1>
       <nav className="flex flex-col flex-1">
         <NavLink
           to={ROUTES.HOME.path}
           className={({ isActive }) =>
             `sidebar-item ${
-              isActive ? "bg-blue-200" : "hover:bg-blue-100"
+              isActive ? "bg-gray-200" : "hover:bg-gray-200"
             }`
           }
           onClick={() => handleSetActive(ROUTES.HOME.path)}
         >
           <HomeIcon className="w-6 h-6 mr-2" />
-          <span>INICIO</span>
+          <span>Inicio</span>
         </NavLink>
 
         <NavLink
           to={ROUTES.UPLOAD.path}
           className={({ isActive }) =>
             `sidebar-item ${
-              isActive ? "bg-blue-200" : "hover:bg-gray-100"
+              isActive ? "bg-gray-200" : "hover:bg-gray-200"
             }`
           }
           onClick={() => handleSetActive(ROUTES.UPLOAD.path)}
         >
           <UploadIcon className="w-6 h-6 mr-2" />
-          <span>CARGAR FACTURA</span>
+          <span>Cargar Factura</span>
         </NavLink>
 
         <NavLink
           to={ROUTES.RECORDS.path}
           className={({ isActive }) =>
             `sidebar-item ${
-              isActive ? "bg-blue-200" : "hover:bg-gray-100"
+              isActive ? "bg-gray-200" : "hover:bg-gray-200"
             }`
           }
           onClick={() => handleSetActive(ROUTES.RECORDS.path)}
         >
           <RecordsIcon className="w-6 h-6 mr-2" />
-          <span>REGISTROS</span>
+          <span>Registros</span>
         </NavLink>
 
         {/* Logout */}
+        <h1 className="divider"></h1>
       <div
         className="sidebar-lastitem "
         onClick={handleLogOut}
       >
         <LogoutIcon className="w-6 h-6 mr-2" />
-        <span>SALIR</span>
+        <span>Cerrar Sesión</span>
       </div>
       </nav>
     </div>

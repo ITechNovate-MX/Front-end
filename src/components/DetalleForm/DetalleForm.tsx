@@ -14,15 +14,25 @@ const DetalleForm: React.FC<DetalleFormProps> = ({ facturaId, onSubmit }) => {
     const [tipoCambio, setTipoCambio] = useState<number>(0);
 
     const calculateFechaVencimiento = (fechaEntrega: string, fechaPortal: string, credito: number): Date => {
+        // Tomar la fecha base (portal o entrega)
         const baseDate = fechaPortal ? new Date(fechaPortal) : new Date(fechaEntrega);
-        baseDate.setDate(baseDate.getDate() + credito);
-        return baseDate;
+
+        // Calcular el timestamp UTC sumando los días del crédito
+        const vencimientoTimestamp = baseDate.getTime() + credito * 24 * 60 * 60 * 1000;
+
+        // Crear una nueva fecha UTC a partir del timestamp
+        const vencimiento = new Date(vencimientoTimestamp);
+
+        // Ajustar la fecha a medianoche UTC
+        vencimiento.setUTCHours(0, 0, 0, 0);
+
+        return vencimiento;
     };
 
     const calculateEstatus = (vencimiento: Date): string => {
         const today = new Date();
-        today.setHours(0, 0, 0, 0); // Ignorar horas en la comparación
-        vencimiento.setHours(0, 0, 0, 0); // Ignorar horas en la comparación
+        today.setUTCHours(0, 0, 0, 0); // Comparar en UTC
+        vencimiento.setUTCHours(0, 0, 0, 0); // Comparar en UTC
 
         if (today < vencimiento) return 'en_progreso';
         if (today.getTime() === vencimiento.getTime()) return 'pendiente';
@@ -32,7 +42,7 @@ const DetalleForm: React.FC<DetalleFormProps> = ({ facturaId, onSubmit }) => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!fechaEntrega || !credito) {
+        if (!fechaEntrega) {
             alert("Por favor, complete los campos obligatorios.");
             return;
         }
@@ -78,7 +88,6 @@ const DetalleForm: React.FC<DetalleFormProps> = ({ facturaId, onSubmit }) => {
                     value={credito}
                     onChange={(e) => setCredito(parseInt(e.target.value, 10))}
                     className="detalle-form__input"
-                    required
                 />
             </div>
 
@@ -100,14 +109,13 @@ const DetalleForm: React.FC<DetalleFormProps> = ({ facturaId, onSubmit }) => {
                     onChange={(e) => setTipoCambio(parseFloat(e.target.value))}
                     className="detalle-form__input"
                     step="0.01"
-                    required
                 />
             </div>
 
             <button
                 type="submit"
                 className="detalle-form__button"
-                disabled={!fechaEntrega || credito <= 0 || tipoCambio <= 0}
+                disabled={!fechaEntrega}
             >
                 Guardar Detalle
             </button>

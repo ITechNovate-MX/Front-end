@@ -1,9 +1,46 @@
-/* Estilos personalizados adicionales si los necesitas */
-.home-container {
-    padding: 20px;
-    background-color: #f4f4f4;
-  }
-  
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.page-title{
+    @apply text-4xl font-bold mb-8;
+}
+
+/* Contenedor facturas pendientes y vencidas */
+.top-container{
+    @apply flex items-center justify-center gap-12;
+}
+/* Box para cada indicador de top-container */
+.element-box-top{
+    @apply bg-white flex p-5 rounded-lg shadow-lg;
+}
+/* Posición icono */
+.icon-container{
+    @apply flex my-5 mx-3;
+}
+/* Icono de cada box top*/
+.icon{
+    @apply w-20 h-20 ;
+}
+.top-box-aux{
+   @apply flex flex-col gap-2 my-2 mx-1;
+}
+/* Valores númericos de cada box top */
+.top-num-v{
+    @apply text-7xl text-center font-light text-red-600;
+}
+.top-num-p{
+    @apply text-7xl text-center font-light text-yellow-500;
+}
+
+/* Boxes para gráficos */
+.element-box{
+    @apply bg-white p-6 rounded-lg shadow-lg;
+}
+/* Título de cada box */
+.box-title{
+    @apply text-sm font-light text-gray-500;
+}
+.indicator-title{
+    @apply text-lg font-medium text-gray-500;
+}

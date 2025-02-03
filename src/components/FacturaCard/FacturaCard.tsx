@@ -110,7 +110,7 @@ const FacturaCard: React.FC<FacturaCardProps> = ({ factura, detalleFactura }) =>
     <div className={`factura-card__container ${getContainerClass()}`} onClick={handleCardClick}>
       <div className="factura-card__content">
         <div className="factura-card__info">
-          <h2 className="font-bold text-blue-950 text-xl">{factura.folio}</h2>
+          <h2 className="factura-card__header">{factura.folio}</h2>
           {factura.fechaEmision ? factura.fechaEmision : "N/A"}
           <p className='font-bold'>{factura.moneda}</p>
         </div>

@@ -68,9 +68,9 @@ const Upload: React.FC = () => {
 
   return (
     <div>
-      <h1 className="titulo">Facturas</h1>
+      <h1 className="page-title">Facturas</h1>
       <UploadCard
-        title="Sube tu archivo de facturas"
+        title="Carga el archivo xml de tu factura"
         onFileUpload={handleFileUpload}
         uploadedMessage={showSuccessMessage ? 'Archivo subido correctamente' : ''}
         uploadErrorMessage={

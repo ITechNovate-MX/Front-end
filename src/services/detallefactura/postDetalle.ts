@@ -5,9 +5,9 @@ export const postDetalle = async (
     fechaEntrega: Date,
     fechaVencimiento: Date,
     estatus: string,
-    credito: number,
+    credito: number | null,
     fechaPortal: Date | null, // Permitir que `fechaPortal` sea opcional
-    tipoCambio: number
+    tipoCambio: number | null
 ): Promise<any> => {
     if (!folio || !fechaEntrega || !fechaVencimiento || !estatus) {
         return Promise.reject(new Error("Faltan datos obligatorios para guardar el detalle de la factura."));

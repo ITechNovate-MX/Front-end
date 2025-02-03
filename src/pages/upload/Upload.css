@@ -1,8 +1,7 @@
-.titulo{
-    color: #190598;
-    font-size: 2.25rem; 
-    font-weight: 700; 
-    font-family:Arial, sans-serif;; 
-    text-align: center; 
-    margin-bottom: 2rem; 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.page-title{
+    @apply text-4xl font-bold text-center text-blue-900 mb-8;
 }

@@ -1,7 +1,11 @@
-.factura-card__container {
-  @apply flex flex-row items-center border-gray-300 rounded-lg bg-white transition duration-300 ease-in-out p-2 my-4 cursor-pointer;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+/* Contenedor de la tarjeta de factura */
+.factura-card__container {
+  @apply flex flex-row justify-center items-center border-gray-300 rounded-lg bg-white transition duration-300 ease-in-out p-2 my-4 cursor-pointer shadow-sm;
+}
 .factura-card__container:hover {
   @apply shadow-md;
 }
@@ -18,33 +22,33 @@
   @apply border-x-8 border-yellow-500;
 }
 
+/* Contenedor de la información de la factura pagada */
 .factura-card__container.factura-card__container--pagada {
-  @apply  bg-green-500 text-white;
+  @apply  bg-emerald-600 text-white border-x-2 border-emerald-700 shadow-emerald-700 shadow-md;
 }
-
 .factura-card__total.factura-card__total--pagada {
   @apply text-white font-bold text-lg;
 }
 
+/* Contenedor defaul */
 .factura-card__container.factura-card__container--default {
   @apply border-gray-500;
 }
 
-
+/* Estructura del contenido de la tarjeta de factura */
 .factura-card__content {
   @apply grid grid-cols-9 w-full;
 }
 
+/* Elementos de la tarjeta */
 .factura-card__header {
-  @apply  justify-between items-center mb-2;
+  @apply  font-bold text-gray-700 text-xl;
 }
-
 .factura-card__cliente {
   @apply text-lg font-bold;
 }
-
 .factura-card__estado {
-  @apply font-bold uppercase text-lg;
+  @apply font-bold uppercase text-lg text-center;
 }
 
 .factura-card__estado.factura-card__estado--vencida {
@@ -65,10 +69,6 @@
 
 .factura-card__info {
   @apply text-sm text-gray-600 mx-1 text-center;
-}
-
-.factura-card__total {
-  @apply text-lg font-semibold text-blue-500;
 }
 
 .factura-card__deletebutton{

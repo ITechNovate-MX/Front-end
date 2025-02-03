@@ -1,9 +1,9 @@
 import React from 'react';
+
 import { LoginForm } from '../../components/LoginForm';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../app-context/app-context';
-
 
 import './Login.css';
 
@@ -37,20 +37,13 @@ const Login: React.FC = () => {
 
   return (
     <div className="login-bg">
-      <div className="login-wcm">
-        <h1 className= "login-wheader">Bienvenido al Portal de Facturación</h1>
-      </div>
-      <div className="login-overlay"></div>
-      <div className="login-form-container">
+      <div className="login-container">
         <LoginForm
           onSubmit={handleSignIn}
           status={formStatus}
           onInputChange={resetFormStatus}
         />
-        {formStatus === 'error' && (
-          <p className="custom-error mt-4">Correo o contraseña incorrectos</p>
-        )}
-      </div>
+        </div>
     </div>
   );
 };
